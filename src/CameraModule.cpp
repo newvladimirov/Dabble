@@ -1,5 +1,5 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "CameraModule.h"
 
 CameraModule::CameraModule(): ModuleParent(CAMERA_ID)

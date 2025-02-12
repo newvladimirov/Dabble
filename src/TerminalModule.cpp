@@ -1,14 +1,14 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "TerminalModule.h"
 
-
+//String comparestring= "";
+String numberString= "";
 String stringData= "";
+String comparestring="";
 bool stringclearflag1=0;
 bool stringclearflag2=0;
 bool stringclearflag3=0;
-String comparestring="";
-String numberstring="";
 
 //Constructor
 TerminalModule::TerminalModule():PrintlnClass(TERMINAL_ID,TERMINAL_WRITE,TERMINAL_PRINT),ModuleParent(TERMINAL_ID)
@@ -55,15 +55,16 @@ void TerminalModule::processData()
 			for (int j=0; j<dataLength; j++)
 			{
 				buffer.push(getDabbleInstance().getArgumentData(0)[j]);
+				//buffer1.push(getDabbleInstance().getArgumentData(0)[j]);
 			}
 	}
 }
-
 bool TerminalModule::compareString(String text)
 {
 	String compareData= "";
 	readString();
     compareData = comparestring;
+	//Serial.println("Terminal String" + comparestring);
 	
     if(stringclearflag3 ==1)
 	{
@@ -120,7 +121,7 @@ String TerminalModule::readString()
 	{
      char a = buffer.pop();
 	 stringData=String(stringData+a);
-	 numberstring=stringData;
+	 numberString=stringData;
 	 comparestring=stringData;
 	 //comparestring=String(comparestring+a);
 	 //numberstring=String(numberstring+a);
@@ -143,9 +144,9 @@ int TerminalModule::readNumber()
 	int numberData;
 	bool a=0;
 	readString();
-	for(int i=0;i<numberstring.length();i++)
+	for(int i=0;i<numberString.length();i++)
 	{
-		if(numberstring.charAt(i)>47 && numberstring.charAt(i)<58)
+		if(numberString.charAt(i)>47 && numberString.charAt(i)<58)
 		{
 			a=1;
 		}
@@ -157,7 +158,7 @@ int TerminalModule::readNumber()
 	if(a==1 && stringclearflag2 == 0)
 	{
 		stringclearflag2=1;
-		numberData= numberstring.toInt();
+		numberData= numberString.toInt();
 	}
 	else
 	{
@@ -165,7 +166,6 @@ int TerminalModule::readNumber()
 	}
 	return numberData;
 }
-
 
 
 

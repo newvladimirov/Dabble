@@ -13,7 +13,7 @@ class MusicModule:public ModuleParent
 	void play(String);
 	void addToQueue(String);
 	void stop();
-	void playMusic(uint8_t,String);
+	void playMusic(uint8_t , String);
 };
 extern MusicModule Music;
 #endif

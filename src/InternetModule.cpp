@@ -1,17 +1,51 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "InternetModule.h"
 
 //Constructor
 InternetModule::InternetModule():ModuleParent(INTERNET_ID)
 {}
 
+/*//Read from Android
+char InternetModule::read()
+{
+	if(buffer.remain()<=0)return -1;
+	return buffer.pop();
+	return 0;
+}
+//Flush buffer contents
+void InternetModule::flush()
+{
+	while(read()!=-1);
+}
+//Check Data avialable in Buffer
+int InternetModule::available()
+{
+	return buffer.remain();
+}
+//Read bytes from Buffer
+int InternetModule::readBytes(char *arr, int length)
+{
+	int count = 0;
+	 	while (count < length) {
+	    int c = read();
+	    if (c < 0) break;
+	    *arr++ = (char)c;
+	    count++;
+ 	}
+  return count;
+}
+*/
+//Terminal Incomming Data processing
 void InternetModule::processData()
 {
 	byte functionID = getDabbleInstance().getFunctionId();
 	byte dataLength = getDabbleInstance().getArgumentLength(0);
 	byte dataLines =  getDabbleInstance().getArgumentNo();
 	
+	/*Serial.print("In processInput");
+    Serial.println(functionID);
+	Serial.println(dataLength);*/
 	if(functionID == HTTP_RESPONSE && successState == 1 )
 	{ 
 		successState = 0;
@@ -28,9 +62,7 @@ void InternetModule::processData()
 				counter++;
 			}
 		}
-		#ifdef DEBUG
 		Serial.println(mainString);
-		#endif
 	}
 	if(functionID == HTTP_SUCCESS)
 	{
@@ -47,7 +79,7 @@ void InternetModule::sendGETRequest(String Urladd)
 	Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(Urladd.length(),(byte *)&Urladd[0]));
 }
 
-void InternetModule::updateThingspeakChannel(String KEY,int noOfData, int value1, int value2, int value3, int value4, int value5, int value6, int value7, int value8)
+void InternetModule::updateChannelFeed(String KEY,int noOfData, int value1, int value2, int value3, int value4, int value5, int value6, int value7, int value8)
 {
 	String channelFeedUrl = "";
 	String baseUrl = "https://api.thingspeak.com/update?api_key=";
@@ -149,7 +181,7 @@ void InternetModule::updateThingspeakChannel(String KEY,int noOfData, int value1
 	}
 }
 
-void InternetModule::updateThingspeakField(String KEY, uint8_t fieldNumber,int data)
+void InternetModule::updateChannelField(String KEY, uint8_t fieldNumber,int data)
 {
 	String channelFeedUrl = "";
 	String baseUrl = "https://api.thingspeak.com/update?api_key=";
@@ -158,122 +190,9 @@ void InternetModule::updateThingspeakField(String KEY, uint8_t fieldNumber,int d
 	//Serial.println(channelFeedUrl);
 	Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(channelFeedUrl.length(),(byte *)&channelFeedUrl[0]));
 }
-
-void InternetModule::updateThingspeakChannel(String KEY,int noOfData, String value1, String value2, String value3, String value4, String value5, String value6, String value7, String value8)
-{
-	String channelFeedUrl = "";
-	String baseUrl = "https://api.thingspeak.com/update?api_key=";
-	channelFeedUrl = baseUrl + KEY;
-	if(noOfData == 1)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-	}
-	if(noOfData == 2)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-	}
-	if(noOfData == 3)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-	}
-	if(noOfData == 4)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		channelFeedUrl = channelFeedUrl + "&field4=" + value4;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-	}
-	if(noOfData == 5)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		channelFeedUrl = channelFeedUrl + "&field4=" + value4;
-		channelFeedUrl = channelFeedUrl + "&field5=" + value5;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-	}
-	if(noOfData == 6)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		channelFeedUrl = channelFeedUrl + "&field4=" + value4;
-		channelFeedUrl = channelFeedUrl + "&field5=" + value5;
-		channelFeedUrl = channelFeedUrl + "&field6=" + value6;
-		#ifdef DEBUG
-		Serial.println(channelFeedUrl);
-		#endif
-	}
-	if(noOfData == 7)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		channelFeedUrl = channelFeedUrl + "&field4=" + value4;
-		channelFeedUrl = channelFeedUrl + "&field5=" + value5;
-		channelFeedUrl = channelFeedUrl + "&field6=" + value6;
-		channelFeedUrl = channelFeedUrl + "&field7=" + value7;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif		
-	}
-	if(noOfData == 8)
-	{
-		channelFeedUrl = channelFeedUrl + "&field1=" + value1;
-		channelFeedUrl = channelFeedUrl + "&field2=" + value2;
-		channelFeedUrl = channelFeedUrl + "&field3=" + value3;
-		channelFeedUrl = channelFeedUrl + "&field4=" + value4;
-		channelFeedUrl = channelFeedUrl + "&field5=" + value5;
-		channelFeedUrl = channelFeedUrl + "&field6=" + value6;
-		channelFeedUrl = channelFeedUrl + "&field7=" + value7;
-		channelFeedUrl = channelFeedUrl + "&field8=" + value8;
-		#ifdef DEBUG 
-		Serial.println(channelFeedUrl); 
-		#endif
-		
-	}
-	if(channelFeedUrl.length() < 256)
-	{
-		Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(channelFeedUrl.length(),(byte *)&channelFeedUrl[0]));
-	}
-	else
-	{
-		#ifdef DEBUG
-		Serial.println("Data too long");
-		#endif
-	}
-}
-
-void InternetModule::updateThingspeakField(String KEY, uint8_t fieldNumber,String data)
-{
-	String channelFeedUrl = "";
-	String baseUrl = "https://api.thingspeak.com/update?api_key=";
-	channelFeedUrl = baseUrl + KEY;
-	channelFeedUrl = channelFeedUrl + "&field" + String(fieldNumber) + "=" + data;
-	//Serial.println(channelFeedUrl);
-	Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(channelFeedUrl.length(),(byte *)&channelFeedUrl[0]));
-}
-
 // https://api.thingspeak.com/channels/767508/fields/1.json?api_key=GHZVP14IXO9CINZO&results=2
 
-/*float InternetModule::getFieldData(String KEY,uint8_t fieldNumber,long timeout)
+float InternetModule::getFieldData(String KEY,uint8_t fieldNumber,long timeout)
 {
 	String fieldDataUrl = "";
 	String baseUrl = "https://api.thingspeak.com/channels/767508/fields/";
@@ -281,7 +200,7 @@ void InternetModule::updateThingspeakField(String KEY, uint8_t fieldNumber,Strin
 	/*#ifdef DEBUG
 	Serial.println(fieldDataUrl);
 	#endif*/
-	/*Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(fieldDataUrl.length(),(byte *)&fieldDataUrl[0]));
+	Dabble.sendModuleFrame(INTERNET_ID,0,HTTP_GET,1,new FunctionArg(fieldDataUrl.length(),(byte *)&fieldDataUrl[0]));
 	long lastTime =millis();
 	//String mainString = ""; 
 	
@@ -376,9 +295,9 @@ void InternetModule::updateThingspeakField(String KEY, uint8_t fieldNumber,Strin
 	else{
 		return -100;
 	}
-}*/
+}
 
-/*void InternetModule::getWeatherData(String KEY, float lat, float lon)
+void InternetModule::getWeatherData(String KEY, float lat, float lon)
 {
 	String latString = "";
 	String longString = "";
@@ -594,5 +513,5 @@ float InternetModule::getTemperatureF()
 float InternetModule::getTemperatureK()
 {
 	return temperatureK;
-}*/
+}
 

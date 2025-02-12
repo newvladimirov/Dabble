@@ -1,5 +1,5 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "ColorDetectorModule.h"
 int checksettings=0;
 
@@ -96,18 +96,13 @@ void ColorDetectorModule::processData()
 	if(checksettingsCallBack == true)
 	{
 		checksettingsCallBack=false;
-	    (*settingsCallBack)();
+		(*settingsCallBack)();
 	}
 	
 	byte functionID = getDabbleInstance().getFunctionId();
-	if(functionID == COLOR_DATA )
+	 if(functionID == COLOR_DATA )
 	{
-		if(checksettings == 0)
-		{
-		 colorScheme = getDabbleInstance().getArgumentData(0)[0];      //First arg line stores color settings
-		 calculationMode = getDabbleInstance().getArgumentData(0)[1];
-		 gridSize = getDabbleInstance().getArgumentData(0)[2];
-		}
+		
 		//Second arg line onwards color values are stored.
 		if(currentArgnumber != getDabbleInstance().getArgumentNo())
 		{
@@ -140,7 +135,7 @@ void ColorDetectorModule::processData()
 			   Serial.println();
 			   #endif
 		  }
-	}
+	} 
 }
 void ColorDetectorModule::setColorScheme(byte bitScheme)
 {
@@ -288,17 +283,17 @@ int ColorDetectorModule::getBlueColor(byte row, byte col)
 
 uint8_t ColorDetectorModule::getGridSize()
 {
-	return gridSize;
+	return getDabbleInstance().getArgumentData(0)[2];;
 }
 
 uint8_t ColorDetectorModule::getColorScheme()
 {
-	return colorScheme;
+	return getDabbleInstance().getArgumentData(0)[0];;
 }
 
 uint8_t ColorDetectorModule::getCalculationMode()
 {
-	return calculationMode;
+	return getDabbleInstance().getArgumentData(0)[1];;
 }
 
 int ColorDetectorModule::getColorValue(uint8_t colorName,uint8_t Row,uint8_t Col)

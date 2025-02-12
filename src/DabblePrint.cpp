@@ -1,6 +1,6 @@
 
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "DabblePrint.h"
 
 
@@ -58,6 +58,7 @@ void PrintClass::print(unsigned long data)
 //Print string
 void PrintClass::print(const char * stringData)
 {
+	//Serial.println("Print String");
 	//Check length of string 
 	int stringDataLength = strlen(stringData);
 	#ifdef DEBUG

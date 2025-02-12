@@ -1,16 +1,17 @@
 
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 
 DabbleClass * ModuleParent::DabbleInstance=NULL;
 bool ModuleParent::DabbleInstanceAvailable=false;
 
 ModuleParent::ModuleParent(byte ModuleNo)
 {
+	//Serial.println("FOUND NEW MODULE");
 	ModuleID = ModuleNo ;
-	#ifdef DEBUG
+	/*#ifdef DEBUG
 	Serial.println(ModuleID);
-	#endif
+	#endif*/
 	isCallBackSet=false;
 	DabbleClass::addToModulesArray(this);
 }

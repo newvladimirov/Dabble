@@ -1,5 +1,5 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "DabbleInputs.h"
 
 DabbleInputs::DabbleInputs() : ModuleParent(EVIVEINTERFACES_ID)
@@ -63,6 +63,7 @@ bool DabbleInputs::getStatus_TactileSwitch2()
 	return ((data_5 & 0x80) == 0x80);
 }
 
+
 uint16_t DabbleInputs::getPot1Value()
 {
 return uint16_t(data_1 << 8) + uint16_t (data_2);
@@ -118,58 +119,6 @@ bool DabbleInputs::getTactileSwitch1Value()
 bool DabbleInputs::getTactileSwitch2Value()
 {
 	return ((data_5 & 0x80) == 0x80);
-}
-
-uint16_t DabbleInputs::getInputsData(uint8_t a)
-{
-	if(a==0)
-	{
-		return uint16_t(data_1 << 8) + uint16_t (data_2);
-	}
-	else if(a==1)
-	{
-		return uint16_t(data_3 << 8) + uint16_t (data_4);
-	}
-	else if(a==2)
-	{
-		if((data_5 & 0x04) == 0x04)
-	    {
-		state_ss1 =3;
-	    }
-	    else if((data_5 & 0x02) == 0x02)
-	    {
-		state_ss1 =2;
-		}
-	    else if((data_5 & 0x01) == 0x01)
-	    {
-		state_ss1 =1;
-		}
-	    return state_ss1;
-	}
-	else if(a==3)
-	{
-		if((data_5 & 0x20) == 0x20)
-	    {
-		state_ss2=3;
-	    }
-	    else if((data_5&0x10) == 0x10)
-	    {
-	    state_ss2=2;
-	    }
-	    else if((data_5&0x08) == 0x08)
-	    {
-	    state_ss2=1;
-	    }
-	    return state_ss2;
-	}
-	else if(a==4)
-	{
-	  return ((data_5 & 0x40) == 0x40);	
-	}
-	else if(a==5)
-	{
-		return ((data_5 & 0x80) == 0x80);
-	}
 }
 
 bool DabbleInputs::getSlideSwitchStatus(uint8_t SS,uint8_t dir)
@@ -275,9 +224,9 @@ int DabbleInputs::getPotValue(uint8_t Pot)
 
 void DabbleInputs::processData()
 {
-	#ifdef DEBUG
+	/*#ifdef DEBUG
 	Serial.println("DabbleInputs:processData");
-	#endif
+	#endif*/
 	
 	//Checking Function-ID
     byte functionId =getDabbleInstance().getFunctionId();
@@ -296,5 +245,4 @@ void DabbleInputs::processData()
 	{
 	data_5=getDabbleInstance().getArgumentData(0)[0]; 
     }
-	
 }

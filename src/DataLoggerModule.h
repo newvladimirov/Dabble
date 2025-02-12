@@ -22,7 +22,6 @@ void send(String,String);
 void sendSettings(void(*)(void));
 //void send(String,char);
 //void send(int,...);
-void close();
 void stop();
 
 //PictoBlox

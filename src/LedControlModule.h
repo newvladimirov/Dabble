@@ -1,5 +1,3 @@
-
-
 #ifndef LedControlModule_h
 #define LedControlModule_h
 
@@ -8,18 +6,18 @@
 
 class LedControlModule : public ModuleParent
 {
-	byte value;
-    public:
+public:
 	//Constructor
 	LedControlModule();
+	public: 
 	uint8_t readBrightness();
-	bool   getpinState();
+	bool    getpinState();
 	uint8_t getpinNumber();
 	uint8_t pin;
-	uint8_t brightness;
+	uint8_t brightness=0;
     private:
 	//Reserve Variables  
-
+	byte value;
 	//bool isCallBackAssigned;
 	//Process Input Data  
 	void processData();

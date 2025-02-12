@@ -1,5 +1,5 @@
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "DataLoggerModule.h"
 uint8_t columnNumber=0;
 String *tempColName = NULL;
@@ -9,12 +9,12 @@ DataLoggerModule::DataLoggerModule():ModuleParent(DATALOGGER_ID)
 void DataLoggerModule::sendSettings(void(*function)(void))
 {
 	callBackForDataLogger = true;
-	dataLoggerCallBack =function;
+	dataLoggerCallBack = function;
 }
 void DataLoggerModule::createFile(String FileName)
 {
 	columnNumber=0;
-	Dabble.sendModuleFrame(DATALOGGER_ID,0,FILENAME,1,new FunctionArg(FileName.length(),(byte*)(&FileName[0])));
+	Dabble.sendModuleFrame(DATALOGGER_ID,0,FILENAME,1,new FunctionArg(FileName.length(),(byte *)&FileName[0]));
 }
 
 void DataLoggerModule::createColumn(String colName)
@@ -44,12 +44,13 @@ void DataLoggerModule::createColumn(String colName)
 	for(int i=0;i<(columnNumber+1);i++)
 	{
 		Serial.println(columnName[i]);
+	
 	}
 	#endif
 	//end
 	uint8_t a = columnNumber+1;
 	String sendColumnName = columnName[columnNumber];
-    Dabble.sendModuleFrame(DATALOGGER_ID,0,COLUMNNAME,2,new FunctionArg(1,&a),new FunctionArg(sendColumnName.length(),(byte*)(&sendColumnName[0])));
+    Dabble.sendModuleFrame(DATALOGGER_ID,0,COLUMNNAME,2,new FunctionArg(1,&a),new FunctionArg(sendColumnName.length(),(byte *)&sendColumnName[0]));
 	columnNumber++;
 }
 
@@ -77,7 +78,7 @@ void DataLoggerModule::send(String col,float data)
 		{
 			columnFlag = i+1;
 			#ifdef DEBUG
-			Serial.println(columnFlag);
+			//Serial.println(columnFlag);
 			#endif
 			break;
 		}
@@ -85,13 +86,13 @@ void DataLoggerModule::send(String col,float data)
 	if(columnFlag == 0)
 	{
 		#ifdef DEBUG
-		Serial.println("No match");
+		//Serial.println("No match");
 		#endif
 		return;
 	}
-	
+
 		Dabble.sendModuleFrame(DATALOGGER_ID,0,DATATYPE_FLOAT,2,new FunctionArg(1,&columnFlag),new FunctionArg(sizeof(float),floatData));
-	
+
 }
 
 void DataLoggerModule::send(String col,String data)
@@ -104,7 +105,7 @@ void DataLoggerModule::send(String col,String data)
 		{
 			columnFlag = i+1;
 			#ifdef DEBUG
-			Serial.println(columnFlag);
+			//Serial.println(columnFlag);
 			#endif
 			break;
 		}
@@ -114,13 +115,7 @@ void DataLoggerModule::send(String col,String data)
 		return;
 	}
 	
-		Dabble.sendModuleFrame(DATALOGGER_ID,0,DATATYPE_CHAR,2,new FunctionArg(1,&columnFlag),new FunctionArg(data.length(),(byte*)(&data[0])));
-	
-}
-
-void DataLoggerModule::close()
-{
-Dabble.sendModuleFrame(DATALOGGER_ID,0,CLOSEFILE,0);
+		Dabble.sendModuleFrame(DATALOGGER_ID,0,DATATYPE_CHAR,2,new FunctionArg(1,&columnFlag),new FunctionArg(data.length(),(byte *)&data[0]));
 }
 
 void DataLoggerModule::stop()
@@ -151,12 +146,12 @@ va_end(colName);
 #ifdef DEBUG
 for(int i = 0;i<count;i++)
 {
-	Serial.print(i);
-	Serial.print(" ");
-	Serial.println(columnName[i]);
+	//Serial.print(i);
+	//Serial.print(" ");
+	//Serial.println(columnName[i]);
 }
 #endif
-Serial.println();
+//Serial.println();
 byte fileNameLength = FileName.length();
 Dabble.sendModuleFrame(DATALOGGER_ID,0,FILENAME,1,new FunctionArg(fileNameLength,&FileName[0]));
 for(uint8_t i=0;i<count;i++)
@@ -175,7 +170,7 @@ for(int i =0;i<columnNumber;i++)
 	if(col == columnName[i])
 	{
 		columnFlag = i+1;
-		Serial.println(columnFlag);
+		//Serial.println(columnFlag);
 		break;
 	}
 }
@@ -186,11 +181,11 @@ if(columnFlag == 0)
 byte a[2];
 a[0] = byte(data>>8);
 a[1] = byte(data);
-Serial.print(a[0],BIN);
-Serial.print(" ");
-Serial.print(a[1],BIN);
-Serial.print(" ");
-Serial.println(data,BIN);
+//Serial.print(a[0],BIN);
+//Serial.print(" ");
+//Serial.print(a[1],BIN);
+//Serial.print(" ");
+//Serial.println(data,BIN);
 Dabble.sendModuleFrame(DATALOGGER_ID,0,DATATYPE_INT,2,new FunctionArg(1,&columnFlag),new FunctionArg(sizeof(int),a));
 }*/
 
@@ -215,7 +210,7 @@ va_start(colData, count);
 				if(col == columnName[i])
 				{
 					columnFlag = i+1;
-					Serial.println(columnFlag);
+					//Serial.println(columnFlag);
 					break;
 				}
 			}

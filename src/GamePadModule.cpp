@@ -1,6 +1,6 @@
 
 #define FROM_DABBLE_LIBRARY
-#include "Dabble.h"
+#include "DabbleESP32.h"
 #include "GamePadModule.h"
 #define PI 3.14159
 
@@ -235,40 +235,34 @@ uint8_t GamePadModule::getRadius()
      return 0;
 }
 
-float GamePadModule::getx_axis()
+float GamePadModule::getXaxisData()
 {
-	if(mode ==1)
-	{
 	uint16_t angle=((value >> 3)*15);
 	uint8_t radius=value&0x07;
 	float x_value= float(radius*(float(cos(float(angle*PI/180)))));
 	return x_value;
-	}
-	else
-	return 0;
-}
-
-float GamePadModule::gety_axis()
-{
-	if(mode ==1)
-	{
-	uint16_t angle=((value >> 3)*15);
-	uint8_t radius=value&0x07;
-	float y_value= float(radius*(float(sin(float(angle*PI/180)))));
-	return y_value;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-float GamePadModule::getXaxisData()
-{
-	return getx_axis();
 }
 
 float GamePadModule::getYaxisData()
 {
-	return gety_axis();
+	uint16_t angle=((value >> 3)*15);
+	uint8_t radius=value&0x07;
+	float y_value= float(radius*(float(sin(float(angle*PI/180)))));
+	return y_value;
+}
+
+float GamePadModule::getx_axis()
+{
+	uint16_t angle=((value >> 3)*15);
+	uint8_t radius=value&0x07;
+	float x_value= float(radius*(float(cos(float(angle*PI/180)))));
+	return x_value;
+}
+
+float GamePadModule::gety_axis()
+{
+	uint16_t angle=((value >> 3)*15);
+	uint8_t radius=value&0x07;
+	float y_value= float(radius*(float(sin(float(angle*PI/180)))));
+	return y_value;
 }

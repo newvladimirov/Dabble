@@ -32,6 +32,7 @@ class GamePadModule : public ModuleParent
 public:
 	//Constructor
 	GamePadModule();
+	//Arduino
 	//Checker Functions
 	bool isStartPressed();
 	bool isSelectPressed();
@@ -39,28 +40,28 @@ public:
 	bool isCirclePressed();
 	bool isCrossPressed();
 	bool isSquarePressed();
-	
 	bool isUpPressed();
 	bool isDownPressed();
 	bool isLeftPressed();
 	bool isRightPressed();
-	
 	uint16_t getAngle();
 	uint8_t getRadius();
-	bool isPressed(uint8_t a);
-	float getJoystickData(uint8_t b);
-	float getx_axis();
-	float gety_axis();
-	
 	float getXaxisData();
 	float getYaxisData();
+
+	float getx_axis();	
+    float gety_axis();
+	
+	//Pictoblox
+	bool isPressed(uint8_t a);
+	float getJoystickData(uint8_t b);
+	
 	//setOnChange for Users Function
 	/* void setOnButtonChange(void (*)(unsigned char , unsigned char ,
 									unsigned char , unsigned char ,
 									unsigned char , unsigned char ,
 									unsigned char , unsigned char ));
- */
-    private:
+ */private:
 	//Reserve Variables
 	bool mode;   //mode=0 for gamepad , mode = 1 for joystick
 	byte value;

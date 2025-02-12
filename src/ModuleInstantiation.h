@@ -12,7 +12,7 @@ EXTERN DabbleInputs Inputs;
 #endif
 
 #ifdef INCLUDE_MOTORCONTROL_MODULE
-EXTERN motorControls motorControl;
+EXTERN motorControls Controls;
 #endif
 
 #ifdef INCLUDE_GAMEPAD_MODULE
@@ -22,10 +22,6 @@ EXTERN GamePadModule GamePad;
 #ifdef INCLUDE_PINMONITOR_MODULE
 EXTERN PinMonitorModule PinMonitor;
 #endif
-
-/*#ifdef INCLUDE_OSCILLOSCOPE_MODULE
-EXTERN OscilloscopeModule Oscilloscope;
-#endif*/
 
 #ifdef INCLUDE_SENSOR_MODULE
 EXTERN SensorModule Sensor;
@@ -58,3 +54,11 @@ EXTERN NotificationModule Notification;
 #ifdef INCLUDE_MUSIC_MODULE
 EXTERN MusicModule Music;
 #endif 
+
+/*#ifdef INCLUDE_ROBOTICARM_MODULE
+EXTERN RoboticArmModule RoboticArm;
+#endif 
+
+#ifdef INCLUDE_HOMEAUTOMATION_MODULE
+EXTERN HomeAutomationModule HomeAutomation;;
+#endif*/

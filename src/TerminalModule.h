@@ -1,3 +1,4 @@
+
 #ifndef TerminalModule_h
 #define TerminalModule_h
 
@@ -30,10 +31,11 @@ public:
 	String readString();
 	bool compareString(String text);
 	int readNumber();
-
+	 
 private:
 	//Instatiate Object from class CircularBuffer
 	CircularBuffer<char,64> buffer;
+	//CircularBuffer<char,64> buffer1;
 	//Process Input data
 	void processData();
 };
